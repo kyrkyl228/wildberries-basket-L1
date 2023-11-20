@@ -49,7 +49,6 @@
                 });
             }
 
-            // Обработчик события ввода с дебаунсингом
             const debouncedGeocode = debounce(geocode, 300);
             addressInput.addEventListener("input", function () {
                 const address = addressInput.value.trim();
