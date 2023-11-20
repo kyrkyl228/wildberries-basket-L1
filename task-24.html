@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<table>
+		<tbody id="table-id">
+			<tr>
+				<th>first name</th>
+				<th>last name</th>
+				<th>telephone</th>
+				<th>address</th>
+				<th>city</th>
+				<th>state</th>
+				<th>zip</th>
+			</tr>
+		</tbody>
+	</table>
+	<div class="main-div" id="pages"></div>
+	<style>
+		table {
+			border-collapse: collapse;
+			table-layout: fixed;
+			width: 100%;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			padding: 8px;
+			text-align: center;
+		}
+
+		th {
+			background-color: #4CAF50;
+			color: white;
+			font-weight: bold;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		.main-div {
+			margin-top: 20px;
+			display: flex;
+		}
+
+		.minor-div {
+			cursor: pointer;
+			display: flex;
+			margin: 0 5px;
+			width: 40px;
+			height: 40px;
+		}
+
+		.minor-div:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		.minor-div:nth-child(odd) {
+			background-color: #dfdede;
+		}
+
+		.minor-div p {
+			margin: auto;
+		}
+	</style>
+	<script>
+		let localDate;
+		let sortOption = 'q';
+		function selectionOfObjects(from, to) {
+			console.log('test')
+			document.getElementById('table-id').innerHTML = `
+			<tr>
+				<th onclick="sortLocalDate('fname', 0)">first name</th>
+				<th onclick="sortLocalDate('lname', 1)">last name</th>
+				<th onclick="sortLocalDate('tel', 2)">telephone</th>
+				<th onclick="sortLocalDate('address', 3)">address</th>
+				<th onclick="sortLocalDate('city', 4)">city</th>
+				<th onclick="sortLocalDate('state', 5)">state</th>
+				<th onclick="sortLocalDate('zip', 6)">zip</th>
+			</tr>
+			`;
+			for (let i = from; i < localDate.length && i >= from && i < to; i++) {
+				document.getElementById('table-id').innerHTML += `
+					<tr>
+						<td>${localDate[i].fname}</td>
+						<td>${localDate[i].lname}</td>
+						<td>${localDate[i].tel}</td>
+						<td>${localDate[i].address}</td>
+						<td>${localDate[i].city}</td>
+						<td>${localDate[i].state}</td>
+						<td>${localDate[i].zip}</td>
+					</tr>
+				`
+			}
+		}
+
+		function createPage() {
+			for (let i = 0; i < Math.ceil(localDate.length / 50); i++) {
+				document.getElementById('pages').innerHTML += '<div class="minor-div" onclick="selectionOfObjects(' + i * 50 + ', ' + (i + 1) * 50 + ')"><p>' + (i + 1) + '</p></div>'
+			}
+		}
+
+		function sortLocalDate(datatype, func) {
+			if (sortOption != func) {
+				localDate.sort((a, b) => {
+					if ((a[datatype] + '').toLowerCase() > (b[datatype] + '').toLowerCase()) {
+						return 1;
+					} else {
+						return -1;
+					}
+				})
+				sortOption = func;
+			} else {
+				localDate.sort((a, b) => {
+					if ((a[datatype] + '').toLowerCase() > (b[datatype] + '').toLowerCase()) {
+						return -1;
+					} else {
+						return 1;
+					}
+				})
+				sortOption = 'q';
+			}
+			selectionOfObjects(0, 50);
+		}
+
+		function dataOutput(date) {
+			localDate = date;
+			selectionOfObjects(0, 50);
+			createPage()
+		}
+
+		fetch('http://www.filltext.com/?rows=1000&fname=%7BfirstName%7D&lname=%7BlastName%7D&tel=%7Bphone%7Cformat%7D&address=%7BstreetAddress%7D&city=%7Bcity%7D&state=%7BusState%7Cabbr%7D&zip=%7Bzip%7D&pretty=true')
+			.then(response => response.json())
+			.then(date => dataOutput(date));
+	</script>
+</body>
+
+</html>

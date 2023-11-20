@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function recursiveFunction() {
+            recursiveFunction();
+        }
+
+        function getStackSize() {
+            try {
+                recursiveFunction();
+            } catch (error) {
+                return error.stack.split('\n').length;
+            }
+        }
+
+        const chromeStackSize = getStackSize();
+        const firefoxStackSize = getStackSize();
+        const operaStackSize = getStackSize();
+
+        const safariStackSize = (new Error().stack || '').split('\n').length;
+
+        console.log(`Размер стека в Chrome: ${chromeStackSize}`);
+        console.log(`Размер стека в Firefox: ${firefoxStackSize}`);
+        console.log(`Размер стека в Opera: ${operaStackSize}`);
+        console.log(`Размер стека в Safari: ${safariStackSize}`);
+    </script>
+</body>
+
+</html>

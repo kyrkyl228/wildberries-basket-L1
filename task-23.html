@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function evaluatePassword(password) {
+            let complexity = 0;
+
+            if (password.length >= 8) {
+                complexity++;
+            }
+
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                complexity++;
+            }
+
+            if (/[0-9]/.test(password)) {
+                complexity++;
+            }
+
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) {
+                complexity++;
+            }
+
+            return complexity;
+        }
+
+        const password = prompt("Введите пароль:");
+        const complexityLevel = evaluatePassword(password);
+
+        if (complexityLevel <= 2) {
+            console.log("Пароль слишком слабый. Рекомендуется использовать пароль с более высоким уровнем сложности.");
+        } else if (complexityLevel == 3) {
+            console.log("Пароль средней сложности. Рекомендуется использовать пароль с более высоким уровнем сложности.");
+        } else {
+            console.log("Пароль достаточно сложный.");
+        }
+    </script>
+</body>
+
+</html>

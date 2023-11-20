@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <label for="addressInput">Введите адрес:</label>
+    <input type="text" id="addressInput">
+    <ul id="suggestions"></ul>
+    <script>
+        function debounce(func, delay) {
+            let timeoutId;
+            return function () {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(context, args);
+                }, delay);
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const addressInput = document.getElementById("addressInput");
+            const suggestionsList = document.getElementById("suggestions");
+            function geocode(address) {
+                const apiKey = '7e72c7af-8505-4dab-aaf9-e0d62cb51c3e';
+                const apiUrl = `https://geocode-maps.yandex.ru/1.x/?apikey=${apiKey}&format=json&geocode=${address}`;
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestions = data.response.GeoObjectCollection.featureMember.map(item => item.GeoObject.name);
+                        updateSuggestions(suggestions);
+                    })
+                    .catch(error => console.error('Ошибка при геокодинге:', error));
+            }
+
+            function updateSuggestions(suggestions) {
+                suggestionsList.innerHTML = "";
+                suggestions.forEach(suggestion => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = suggestion;
+                    suggestionsList.appendChild(listItem);
+                });
+            }
+
+            // Обработчик события ввода с дебаунсингом
+            const debouncedGeocode = debounce(geocode, 300);
+            addressInput.addEventListener("input", function () {
+                const address = addressInput.value.trim();
+                if (address.length > 0) {
+                    debouncedGeocode(address);
+                } else {
+                    suggestionsList.innerHTML = "";
+                }
+            });
+
+            suggestionsList.addEventListener("click", function (event) {
+                if (event.target.tagName === "LI") {
+                    addressInput.value = event.target.textContent;
+                    suggestionsList.innerHTML = "";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

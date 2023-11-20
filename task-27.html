@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="myElement" style="background-color: aqua; width: 0px; height: 0px;"></div>
+    <script>
+        function addAnimation(elementId) {
+            var element = document.getElementById(elementId);
+            if (element) {
+                element.style.transition = "all 10s ease";
+                setTimeout(() => {
+                    element.style.width = "200px";
+                    element.style.height = "200px";
+                }, 0);
+            }
+        }
+        addAnimation("myElement");
+    </script>
+</body>
+
+</html>

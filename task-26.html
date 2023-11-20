@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body id="root">
+    <div class="div-1">
+        <div class="div-2">
+            <p class="p-1"></p>
+            <p class="p-2"></p>
+            <p class="p-3"></p>
+        </div>
+        <div class="div-4">
+            <p class="p-4"></p>
+            <p class="p-5"></p>
+        </div>
+    </div>
+    <script>
+        function traverseDOM(node) {
+            console.log("Тег:", node.tagName, node.className);
+
+            const children = node.childNodes;
+            for (let i = 0; i < children.length; i++) {
+                const child = children[i];
+                if (child.nodeType === Node.ELEMENT_NODE) {
+                    traverseDOM(child);
+                }
+            }
+        }
+
+        const rootElement = document.getElementById("root");
+        traverseDOM(rootElement);
+
+    </script>
+</body>
+
+</html>

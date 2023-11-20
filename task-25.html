@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function createAndStyleElement(tagName, className, cssStyles) {
+            const element = document.createElement(tagName);
+
+            element.className = className;
+
+            for (let style in cssStyles) {
+                element.style[style] = cssStyles[style];
+            }
+
+            document.body.appendChild(element);
+
+            return element;
+        }
+        const myStyles = {
+            backgroundColor: 'blue',
+            width: '300px',
+            height: '40px',
+            marginTop: '10px',
+        };
+
+        const myStyles2 = {
+            backgroundColor: 'red',
+            width: '300px',
+            height: '40px',
+            marginTop: '10px',
+        };
+
+        const myStyles3 = {
+            backgroundColor: 'yellow',
+            width: '300px',
+            height: '40px',
+            marginTop: '10px',
+        };
+
+        createAndStyleElement('div', 'my-element', myStyles);
+        createAndStyleElement('div', 'my-element', myStyles2);
+        createAndStyleElement('div', 'my-element', myStyles3);
+    </script>
+</body>
+
+</html>

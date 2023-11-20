@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<now>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</now>
+
+<body>
+    <script>
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.next = null;
+            }
+        }
+
+        function jsonToLinkedList(json) {
+            const data = JSON.parse(json);
+            const arr = data.items;
+
+            if (!arr || arr.length === 0) {
+                return null;
+            }
+
+            let now = null;
+            let next = null;
+            for (let i = 0; i < arr.length; i++) {
+                const newNode = new Node(arr[i]);
+                if (now === null) {
+                    now = newNode;
+                    next = newNode;
+                } else {
+                    next.next = newNode;
+                    next = newNode;
+                }
+            }
+
+            return now;
+        }
+
+        const json = `{
+            "items": [
+                { "el1": "1" },
+                { "el1": "2" },
+                { "el1": "3" },
+                { "el1": "4" },
+                { "el1": "5" },
+                { "el1": "6" },
+                { "el1": "7" },
+                { "el1": "8" },
+                { "el1": "9" }  
+            ]
+        }`;
+
+        const linkedList = jsonToLinkedList(json);
+        console.log(linkedList);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function jsonToString(obj) {
+            let str = "{";
+            for (let key in obj) {
+                if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+                    str += `"${key}":${jsonToString(obj[key])},`;
+                } else if (Array.isArray(obj[key])) {
+                    str += `"${key}":[`;
+                    obj[key].forEach((item, index) => {
+                        if (typeof item === 'object') {
+                            debugger
+                            str += jsonToString(item);
+                        } else if (typeof item === 'string') {
+                            str += `"${item}"`;
+                        } else {
+                            str += `${item}`;
+                        }
+                        if (index !== obj[key].length - 1) {
+                            str += ',';
+                        }
+                    });
+                    str += '],';
+                } else if (typeof obj[key] === 'string') {
+                    str += `"${key}":"${obj[key]}",`;
+                } else {
+                    str += `"${key}":${obj[key]},`;
+                }
+            }
+            str = str.substring(0, str.length - 1);
+            return str + "}";
+        }
+
+        const obj = {
+            name: 'Vlaqikk',
+            years: 13,
+            test1: 'test1',
+            test2: 'test1',
+            test3: 'test1',
+            test4: true,
+            mass1: [1, 2, 3, 4, 5],
+            mass2: ['sdasd', 'asdsadas', 'asdasdsa'],
+            obj: {test1: 'ewrrwer', nameee: ['1', ['1', ['1', ['1', '22222']]]], years: 213, bool: true}
+        }
+
+        console.log(jsonToString(obj));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Shape {
+            calculateArea() {
+                throw new Error("Method 'calculateArea' must be implemented.");
+            }
+
+            calculatePerimeter() {
+                throw new Error("Method 'calculatePerimeter' must be implemented.");
+            }
+        }
+
+        class Rectangle extends Shape {
+            constructor(width, height) {
+                super();
+                this.width = width;
+                this.height = height;
+            }
+
+            calculateArea() {
+                return this.width * this.height;
+            }
+
+            calculatePerimeter() {
+                return 2 * (this.width + this.height);
+            }
+        }
+
+        class Circle extends Shape {
+            constructor(radius) {
+                super();
+                this.radius = radius;
+            }
+
+            calculateArea() {
+                return Math.PI * this.radius * this.radius;
+            }
+
+            calculatePerimeter() {
+                return 2 * Math.PI * this.radius;
+            }
+        }
+
+        class Triangle extends Shape {
+            constructor(sideA, sideB, sideC) {
+                super();
+                this.sideA = sideA;
+                this.sideB = sideB;
+                this.sideC = sideC;
+            }
+
+            calculateArea() {
+                // Using Heron's formula
+                const s = (this.sideA + this.sideB + this.sideC) / 2;
+                return Math.sqrt(s * (s - this.sideA) * (s - this.sideB) * (s - this.sideC));
+            }
+
+            calculatePerimeter() {
+                return this.sideA + this.sideB + this.sideC;
+            }
+        }
+
+        // Пример использования классов
+
+        const rectangle = new Rectangle(4, 5);
+        console.log("Rectangle area:", rectangle.calculateArea()); // 20
+        console.log("Rectangle perimeter:", rectangle.calculatePerimeter()); // 18
+
+        const circle = new Circle(3);
+        console.log("Circle area:", circle.calculateArea().toFixed(2)); // 28.27
+        console.log("Circle perimeter:", circle.calculatePerimeter().toFixed(2)); // 18.85
+
+        const triangle = new Triangle(3, 4, 5);
+        console.log("Triangle area:", triangle.calculateArea()); // 6
+        console.log("Triangle perimeter:", triangle.calculatePerimeter()); // 12
+    </script>
+</body>
+
+</html>

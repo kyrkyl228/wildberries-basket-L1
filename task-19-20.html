@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="posts" id="posts-id">
+
+    </div>
+    <button class="reset-button" onclick="resetLocalStorage()">Сбросить</button>
+    <style>
+        .posts {
+            width: 500px;
+            height: 600px;
+            overflow-y: scroll;
+        }
+
+        .post {
+            background-color: azure;
+            overflow: hidden;
+        }
+
+        .post:nth-child(n + 2) {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        let offset;
+        if (localStorage.getItem('objOfPosts')) {
+            offset = JSON.parse(localStorage.getItem('objOfPosts')).offset;
+        } else {
+            offset = 0
+        }
+        const count = 10;
+        if (!localStorage.getItem('objOfPosts')) {
+            let objOfPosts = {
+                offset: offset,
+                memory: '',
+                posts: [
+
+                ]
+            };
+            localStorage.setItem('objOfPosts', JSON.stringify(objOfPosts))
+
+        }
+
+        for (let i = 0; i < JSON.parse(localStorage.getItem('objOfPosts')).posts.length; i++) {
+            const localDate = JSON.parse(localStorage.getItem('objOfPosts')).posts
+            document.getElementById('posts-id').innerHTML += `
+                <div class="post">
+                    <p class="post__text">${localDate[i].text}</p>
+                    <p class="likes">лайков - ${localDate[i].likes}</p>
+                    <p class="reposts">репостов - ${localDate[i].reposts}</p>
+                </div>
+            `;
+        }
+
+        function resetLocalStorage(){
+            localStorage.clear();
+            location.reload()
+        }
+
+        function getPosts(count, offset) {
+            const script = document.createElement('SCRIPT');
+            script.src = `https://api.vk.com/method/wall.get?owner_id=-149279263&count=` + count + `&offset=` + offset + `&access_token=a6f572e3a6f572e3a6f572e365a5e333f0aa6f5a6f572e3c3bb31b9f0e0a5315c6d9561&v=5.154&callback=callbackFunc`;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+
+        function localStorageMemory() {
+            console.log("Занято " + localStorage.getItem('objOfPosts').length / (1024 * 1024) + " Мбайт");
+            const local = localStorage.getItem('objOfPosts');
+            let a = 'a';
+            try {
+                while (true) {
+                    localStorage.setItem('objOfPosts', a);
+                    a += a
+                }
+            } catch (error) {
+                console.log('Максимальный объем данных, который можно записать в localStorage: ' + a.split('').length / (1024 * 1024) + " Мбайт")
+                localStorage.setItem('objOfPosts', local);
+            }
+        }
+
+        function callbackFunc(res) {
+            for (let i = 0; i < res.response.items.length; i++) {
+                let localDate = JSON.parse(localStorage.getItem('objOfPosts'));
+                localDate.offset = offset;
+                localDate.posts.push({ text: res.response.items[i].text, likes: res.response.items[i].likes.count, reposts: res.response.items[i].reposts.count })
+                try {
+                    localStorage.setItem('objOfPosts', JSON.stringify(localDate))
+                } catch {
+                    localDate.posts.slice(count);
+                    localStorage.setItem('objOfPosts', JSON.stringify(localDate))
+                }
+                document.getElementById('posts-id').innerHTML += `
+                <div class="post">
+                    <p class="post__text">${res.response.items[i].text}</p>
+                    <p class="likes">лайков - ${res.response.items[i].likes.count}</p>
+                    <p class="reposts">репостов - ${res.response.items[i].reposts.count}</p>
+                </div>
+                `;
+            }
+            localStorageMemory();
+        }
+
+        var scrollableBlock = document.getElementById("posts-id");
+        scrollableBlock.addEventListener("scroll", function () {
+            if (scrollableBlock.scrollHeight - scrollableBlock.scrollTop === scrollableBlock.clientHeight) {
+                offset += count;
+                getPosts(count, offset)
+            }
+        });
+
+        if(JSON.parse(localStorage.getItem('objOfPosts')).offset == 0){
+            getPosts(count, offset);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const MathX = (() => {
+            const fibonacci = (n) => {
+                if (n <= 0) {
+                    throw new Error('N должно быть положительным числом.');
+                }
+                if (n === 1) {
+                    return 0;
+                }
+                let a = 0;
+                let b = 1;
+                for (let i = 2; i <= n; i++) {
+                    const next = a + b;
+                    a = b;
+                    b = next;
+                }
+                return b;
+            };
+
+            const fibonacciSequence = (n) => {
+                if (n <= 0) {
+                    throw new Error('N должно быть положительным числом.');
+                }
+                const sequence = [0];
+                let a = 0;
+                let b = 1;
+                while (b <= n) {
+                    sequence.push(b);
+                    const next = a + b;
+                    a = b;
+                    b = next;
+                }
+                return sequence;
+            };
+
+            const nthPrime = (n) => {
+                if (n <= 0) {
+                    throw new Error('N должно быть положительным числом.');
+                }
+
+                let count = 0;
+                let number = 2;
+
+                function isPrime(number) {
+                    if (number < 2) {
+                        return false;
+                    }
+                    for (let i = 2; i <= Math.sqrt(number); i++) {
+                        if (number % i === 0) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                while (count < n) {
+                    if (isPrime(number)) {
+                        count++;
+                    }
+                    number++;
+                }
+                return number - 1;
+            };
+
+            const primesUpToN = (n) => {
+                if (n <= 0) {
+                    throw new Error('N должно быть положительным числом.');
+                }
+                const primes = [];
+                for (let number = 2; number <= n; number++) {
+                    if (nthPrime(number)) {
+                        primes.push(number);
+                    }
+                }
+                return primes;
+            };
+
+            return {
+                fibonacci,
+                fibonacciSequence,
+                nthPrime,
+                primesUpToN,
+            };
+        })();
+
+        // Примеры использования
+
+        console.log(MathX.fibonacci(10)); // Вывод: 55
+
+        console.log(MathX.fibonacciSequence(100)); // Вывод: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
+        console.log(MathX.nthPrime(6)); // Вывод: 13
+
+        console.log(MathX.primesUpToN(20)); // Вывод: [2, 3, 5, 7, 11, 13, 17, 19]
+
+    </script>
+</body>
+
+</html>

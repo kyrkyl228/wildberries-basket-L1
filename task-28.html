@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <template id="myTemplate">
+        <div class="div-1">
+            <div class="div-2">
+                <p class="p-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, beatae doloremque dolorem veniam explicabo qui sapiente dolorum quidem possimus nisi consequuntur pariatur velit excepturi sequi aspernatur saepe nulla voluptas ad.</p>
+                <p class="p-2">Lorem, ipsum dolor.</p>
+                <p class="p-3">Lorem ipsum dolor sit amet.</p>
+            </div>
+            <div class="div-4">
+                <p class="p-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus, pariatur. Excepturi modi fuga unde corrupti assumenda praesentium inventore perferendis ipsam blanditiis eos exercitationem beatae delectus quasi atque veritatis, iure provident.</p>
+                <p class="p-5">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde vitae in quidem rerum.</p>
+            </div>
+        </div>
+    </template>
+
+    <div id="container">
+
+    </div>
+
+    <button onclick="createAndAppendElement()">Создать и добавить элемент</button>
+    <script>
+        function createAndAppendElement() {
+            const template = document.getElementById('myTemplate');
+
+            const clone = document.importNode(template.content, true);
+
+            const container = document.getElementById('container');
+
+            container.appendChild(clone);
+        }
+
+
+    </script>
+</body>
+
+</html>
